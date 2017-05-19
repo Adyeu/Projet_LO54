@@ -25,6 +25,20 @@
                     
                 </h:panelGrid>
             </ace:panel>
+            
+            <ace:dataTable value="#{dataTableBean.courseSessionsList}" var="courseSession"
+                            rowSelectListener="#{dataTableBean.rowSelectListener}"
+                            selectionMode="single">
+                <ace:column headerText="ID">
+                    <h:outputText value="#{courseSession.id}"></h:outputText>
+                </ace:column>
+                <ace:column headerText="Start Date">
+                    <h:outputText value="#{courseSession.startDate}"></h:outputText>
+                </ace:column>
+                <ace:column headerText="End Date">
+                    <h:outputText value="#{courseSession.endDate}"></h:outputText>
+                </ace:column>
+            </ace:dataTable>
 
         </h:form>
     </h:body>
