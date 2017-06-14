@@ -11,15 +11,20 @@ import fr.utbm.entity.Location;
 import fr.utbm.repository.ClientDAO;
 import fr.utbm.repository.CourseSessionDAO;
 import fr.utbm.repository.LocationDAO;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import org.icefaces.ace.event.SelectEvent;
+import org.icefaces.ace.event.UnselectEvent;
 
 @ManagedBean(name="dataTableBean")
-@ViewScoped
+@CustomScoped(value = "#{window}")
 public class DataTableBean {
  
 	private List<CourseSession> courseSessionsList;
@@ -27,8 +32,9 @@ public class DataTableBean {
         private CourseSession selectedCourseSession = null;
         private Boolean disableButton = true;
         private String dialogHeader = "";
-        
         private String type;
+        private String firstName, lastName, address, phone, email;
+        
         public String getType() { return type; }
         public void setType(String type) { this.type = type; }
         
@@ -80,6 +86,21 @@ public class DataTableBean {
             this.dialogHeader = dialogHeader;
         }
         
+        public String getFirstName() { return firstName; }
+        public void setFirstName(String firstName) { this.firstName = firstName; }
+
+        public String getLastName() { return lastName; }
+        public void setLastName(String lastName) { this.lastName = lastName; }
+
+        public String getAddress() { return address; }
+        public void setAddress(String address) { this.address = address; }
+
+        public String getPhone() { return phone; }
+        public void setPhone(String phone) { this.phone = phone; }
+
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        
         /*private static HashMap<String, Integer> severityMap = new HashMap<String, Integer>() {{
             put("First Name", 1);
             put("Last Name", 1);
@@ -108,7 +129,7 @@ public class DataTableBean {
             }
         }*/
  
-	public DataTableBean () {                
+	public DataTableBean () {
                 CourseSessionDAO courseSessionDAO = new CourseSessionDAO();
                 courseSessionsList = courseSessionDAO.loadAll();
                 
@@ -125,5 +146,32 @@ public class DataTableBean {
             selectedCourseSession = (CourseSession) event.getObject();
             disableButton = false;
             dialogHeader = "Registration for " + selectedCourseSession.getCourse().getTitle();
+        }
+        
+        public void rowUnselectListener(UnselectEvent event) {
+            disableButton = true;
+        }
+
+        public void registerUser() {
+            if(firstName != null && !firstName.trim().isEmpty()
+                    && lastName != null && !lastName.trim().isEmpty()
+                    && address != null && !address.trim().isEmpty()
+                    && phone != null && !phone.trim().isEmpty()
+                    && email != null && !email.trim().isEmpty()) {
+                Client client = new Client();
+                client.setFirstName(firstName);
+                client.setLastName(lastName);
+                client.setAddress(address);
+                client.setPhone(phone);
+                client.setEmail(email);
+                client.setCourseSession(selectedCourseSession);
+
+                ClientDAO clientDAO = new ClientDAO();
+                clientDAO.save(client);
+                
+                /*String message = "User Successfully Created";
+                FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(0), message, message);
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage*/
+            }
         }
 }
