@@ -10,10 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-/**
- *
- * @author fskaff
- */
 @Entity
 public class Client implements Serializable {
     

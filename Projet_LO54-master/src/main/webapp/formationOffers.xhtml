@@ -13,32 +13,92 @@
     </h:head>
     <h:body>
         <h:form>
-
-            <ace:panel header="Welcome to ICEfaces">
-                <h:panelGrid columns="1">
-                    <!-- NOTICE -To run this page you must have also ICEfaces ACE components library on your classpath (project dependencies). -->
-                    <ace:linkButton id="linkButton1" value="ICEfaces Overview" href="http://wiki.icesoft.org/display/ICE/ICEfaces+Overview"></ace:linkButton>
-                    <ace:linkButton id="linkButton2" value="General Documentation" href="http://wiki.icesoft.org/display/ICE/ICEfaces+Documentation"></ace:linkButton>
-                    <ace:linkButton id="linkButton3" value="ICEfaces Demos" href="http://www.icesoft.org/demos/icefaces-demos.jsf"></ace:linkButton>
-                    <ace:linkButton id="linkButton4" value="Tutorials" href="http://www.icesoft.org/community/tutorials-samples.jsf"></ace:linkButton>
-                    <ace:linkButton id="linkButton5" value="ACE components" href="http://wiki.icesoft.org/display/ICE/ACE+Components"></ace:linkButton>
-                    
-                </h:panelGrid>
-            </ace:panel>
             
             <ace:dataTable value="#{dataTableBean.courseSessionsList}" var="courseSession"
                             rowSelectListener="#{dataTableBean.rowSelectListener}"
-                            selectionMode="single">
-                <ace:column headerText="ID">
-                    <h:outputText value="#{courseSession.id}"></h:outputText>
+                            selectionMode="single"
+                            paginator="true"
+                            paginatorPosition="bottom"
+                            rows="10">
+                <ace:column headerText="Course Code">
+                    <h:outputText value="#{courseSession.getCourse().code}"></h:outputText>
                 </ace:column>
-                <ace:column headerText="Start Date">
-                    <h:outputText value="#{courseSession.startDate}"></h:outputText>
+                <ace:column headerText="Course Title"
+                            filterBy="#{courseSession.getCourse().title}"
+                            filterMatchMode="contains">
+                    <h:outputText value="#{courseSession.getCourse().title}"></h:outputText>
+                </ace:column>
+                <ace:column headerText="City"
+                            filterBy="#{courseSession.getLocation().city}" 
+                            filterOptions="#{dataTableBean.cityOptions}"
+                            filterValue="#{dataTableBean.type}">
+                    <h:outputText value="#{courseSession.getLocation().city}"></h:outputText>
+                </ace:column>
+                <ace:column headerText="Start Date"
+                            filterBy="#{courseSession.startDate}" type="DATE" rangedFilter="true"
+                            filterValueMin="#{dataTableBean.minDate}"
+                            filterValueMax="#{dataTableBean.maxDate}">
+                    <h:outputText value="#{courseSession.startDate}">
+                        <f:convertDateTime dateStyle="long"/>
+                    </h:outputText>
                 </ace:column>
                 <ace:column headerText="End Date">
-                    <h:outputText value="#{courseSession.endDate}"></h:outputText>
+                    <h:outputText value="#{courseSession.endDate}">
+                        <f:convertDateTime dateStyle="long"/>
+                    </h:outputText>
                 </ace:column>
             </ace:dataTable>
+            
+            <br/><br/><center>
+                <ace:pushButton id="show"
+                                disabled="#{dataTableBean.disableButton}"
+                                value="Register"
+                                onclick="ice.ace.instance('#{dialog.clientId}').show();"/>
+                <!--h:commandButton id="show" disabled="#{dataTableBean.disableButton}" value="Register" onclick="#{myWindowScopedBean.registerUser()}" type="button"/--> <!--onclick="ice.ace.instance('#{dialog.clientId}').show();"/-->
+            </center>
+            
+            <ace:dialog id="dialog" binding="#{dialog}"
+                        header="#{dataTableBean.dialogHeader}"
+                        closable="true"
+                        modal="true"
+                        draggable="false"
+                        showEffect="clip"
+                        hideEffect="fade"
+                        width="400">
+                
+                <h:form id="inputForm">
+                    <h:panelGrid columns="1" width="100%">
+                        <ace:textEntry id="firstNameInput" value="#{myWindowScopedBean.firstName}" label="First Name" labelPosition="left">
+                            <!--ace:ajax event="blur" render="firstNameMsg" listener="#{myWindowScopedBean.blurListener}"/-->
+                        </ace:textEntry>
+                        <!--ace:message id="firstNameMsg" for="firstNameInput" initEffect="bounce" changeEffect="explode"/-->
+
+                        <ace:textEntry id="lastNameInput" value="#{myWindowScopedBean.lastName}" label="Last Name" labelPosition="left">
+                            <!--ace:ajax event="blur" render="lastNameMsg" listener="#{myWindowScopedBean.blurListener}"/-->
+                        </ace:textEntry>
+                        <!--ace:message id="lastNameMsg" for="lastNameInput" initEffect="fade" changeEffect="size"/-->
+
+                        <ace:textEntry id="addressInput" value="#{myWindowScopedBean.address}" label="Address" labelPosition="left">
+                            <!--ace:ajax event="blur" render="addressMsg" listener="#{myWindowScopedBean.blurListener}"/-->
+                        </ace:textEntry>
+                        <!--ace:message id="addressMsg" for="addressInput" initEffect="pulsate" changeEffect="scale"/-->
+
+                        <ace:textEntry id="phoneInput" value="#{myWindowScopedBean.phone}" label="Phone" labelPosition="left">
+                            <!--ace:ajax event="blur" render="phoneMsg" listener="#{myWindowScopedBean.blurListener}"/-->
+                        </ace:textEntry>
+                        <!--ace:message id="phoneMsg" for="phoneInput" initEffect="slide" changeEffect="shake"/-->
+                        <ace:textEntry id="emailInput" value="#{myWindowScopedBean.email}" label="Email" labelPosition="left">
+                            <!--ace:ajax event="blur" render="emailMsg" listener="#{myWindowScopedBean.blurListener}"/-->
+                        </ace:textEntry>
+                        <!--ace:message id="emailMsg" for="emailInput" initEffect="slide" changeEffect="shake"/-->
+                    </h:panelGrid>
+
+                    <h:panelGrid width="100%" style="text-align: center;">
+                        <h:commandButton id="submitBtn" value="Register" action="#{myWindowScopedBean.registerUser(1)}"/>
+                    </h:panelGrid>
+                </h:form>
+                
+            </ace:dialog>
 
         </h:form>
     </h:body>

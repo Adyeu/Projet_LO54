@@ -1,4 +1,5 @@
 
+import core.util.HibernateUtil;
 import java.io.Serializable;
 import org.hibernate.Session;
 
