@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.utbm.bean;
 
 import fr.utbm.entity.Client;
@@ -11,7 +6,6 @@ import fr.utbm.entity.Location;
 import fr.utbm.repository.ClientDAO;
 import fr.utbm.repository.CourseSessionDAO;
 import fr.utbm.repository.LocationDAO;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -19,7 +13,6 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.faces.view.ViewScoped;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.UnselectEvent;
 
@@ -100,34 +93,6 @@ public class DataTableBean {
 
         public String getEmail() { return email; }
         public void setEmail(String email) { this.email = email; }
-        
-        /*private static HashMap<String, Integer> severityMap = new HashMap<String, Integer>() {{
-            put("First Name", 1);
-            put("Last Name", 1);
-            put("Address", 1);
-            put("Phone", 1);
-            put("Email", 1);
-        }};
-        private static String[] severityNames = {"Info", "Warn", "Error", "Fatal"};
-        
-        public void blurListener(AjaxBehaviorEvent event) {
-            if(event != null) {
-                TextEntry textEntry = (TextEntry) event.getComponent();
-                String value = textEntry.getValue().toString().trim();
-                String label = textEntry.getLabel();
-                if (value.equals("") || value.equalsIgnoreCase(label)) {
-                    int index = severityMap.get(label);
-                    String message;
-                    if (value.equals("")) {
-                        message = severityNames[index] + ": " + label + " missing.";
-                    } else {
-                        message = severityNames[index] + ": Value cannot be \"" + value + "\"";
-                    }
-                    FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(index), message, message);
-                    FacesContext.getCurrentInstance().addMessage(textEntry.getClientId(), facesMessage);
-                }
-            }
-        }*/
  
 	public DataTableBean () {
                 CourseSessionDAO courseSessionDAO = new CourseSessionDAO();
@@ -165,13 +130,22 @@ public class DataTableBean {
                 client.setPhone(phone);
                 client.setEmail(email);
                 client.setCourseSession(selectedCourseSession);
+                firstName = "";
+                lastName = "";
+                address = "";
+                phone = "";
+                email = "";
 
                 ClientDAO clientDAO = new ClientDAO();
                 clientDAO.save(client);
                 
-                /*String message = "User Successfully Created";
+                String message = "User Successfully Created";
                 FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(0), message, message);
-                FacesContext.getCurrentInstance().addMessage(null, facesMessage*/
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+            } else {
+                String message = "Fields cannot be empty";
+                FacesMessage facesMessage = new FacesMessage((FacesMessage.Severity) FacesMessage.VALUES.get(2), message, message);
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
             }
         }
 }

@@ -1,14 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:icecore="http://www.icefaces.org/icefaces/core"
       xmlns:ace="http://www.icefaces.org/icefaces/components">
     <h:head>
         <title>Course Picking</title>
-        <!-- This line is only for ICE component, remove it if no ice component is used in this page.-->
         <link rel="stylesheet" type="text/css" href="./xmlhttp/css/rime/rime.css"/>
     </h:head>
     <h:body>
@@ -57,52 +55,37 @@
                                 disabled="#{dataTableBean.disableButton}"
                                 value="Register"
                                 onclick="ice.ace.instance('#{dialog.clientId}').show();"/>
-                <!--h:commandButton id="show" disabled="#{dataTableBean.disableButton}" value="Register" onclick="#{dataTableBean.registerUser()}" type="button"/--> <!--onclick="ice.ace.instance('#{dialog.clientId}').show();"/-->
             </center>
             
             <ace:dialog id="dialog" binding="#{dialog}"
                         header="#{dataTableBean.dialogHeader}"
                         closable="true"
                         modal="true"
-                        draggable="false"
+                        draggable="true"
                         showEffect="clip"
                         hideEffect="fade"
                         width="400">
                 
                     <h:panelGrid columns="1" width="100%">
-                        <ace:textEntry id="firstNameInput" value="#{dataTableBean.firstName}" label="First Name" labelPosition="left">
-                            <!--ace:ajax event="blur" render="firstNameMsg" listener="#{dataTableBean.blurListener}"/-->
-                        </ace:textEntry>
-                        <!--ace:message id="firstNameMsg" for="firstNameInput" initEffect="bounce" changeEffect="explode"/-->
+                        <ace:textEntry id="firstNameInput" value="#{dataTableBean.firstName}" label="First Name" labelPosition="left"/>
 
-                        <ace:textEntry id="lastNameInput" value="#{dataTableBean.lastName}" label="Last Name" labelPosition="left">
-                            <!--ace:ajax event="blur" render="lastNameMsg" listener="#{dataTableBean.blurListener}"/-->
-                        </ace:textEntry>
-                        <!--ace:message id="lastNameMsg" for="lastNameInput" initEffect="fade" changeEffect="size"/-->
+                        <ace:textEntry id="lastNameInput" value="#{dataTableBean.lastName}" label="Last Name" labelPosition="left"/>
 
-                        <ace:textEntry id="addressInput" value="#{dataTableBean.address}" label="Address" labelPosition="left">
-                            <!--ace:ajax event="blur" render="addressMsg" listener="#{dataTableBean.blurListener}"/-->
-                        </ace:textEntry>
-                        <!--ace:message id="addressMsg" for="addressInput" initEffect="pulsate" changeEffect="scale"/-->
+                        <ace:textEntry id="addressInput" value="#{dataTableBean.address}" label="Address" labelPosition="left"/>
 
-                        <ace:textEntry id="phoneInput" value="#{dataTableBean.phone}" label="Phone" labelPosition="left">
-                            <!--ace:ajax event="blur" render="phoneMsg" listener="#{dataTableBean.blurListener}"/-->
-                        </ace:textEntry>
-                        <!--ace:message id="phoneMsg" for="phoneInput" initEffect="slide" changeEffect="shake"/-->
-                        <ace:textEntry id="emailInput" value="#{dataTableBean.email}" label="Email" labelPosition="left">
-                            <!--ace:ajax event="blur" render="emailMsg" listener="#{dataTableBean.blurListener}"/-->
-                        </ace:textEntry>
-                        <!--ace:message id="emailMsg" for="emailInput" initEffect="slide" changeEffect="shake"/-->
+                        <ace:textEntry id="phoneInput" value="#{dataTableBean.phone}" label="Phone" labelPosition="left"/>
+                        
+                        <ace:textEntry id="emailInput" value="#{dataTableBean.email}" label="Email" labelPosition="left"/>
                     </h:panelGrid>
 
                     <h:panelGrid width="100%" style="text-align: center;">
-                        <h:commandButton id="submitBtn" value="Register" action="#{dataTableBean.registerUser}"/>
+                        <ace:pushButton id="submitBtn" value="Register" action="#{dataTableBean.registerUser}"/>
                     </h:panelGrid>
                 
             </ace:dialog>
-            <!--ace:growlMessages  id="allMsgsGrowl" for="@inView"
+            <ace:growlMessages  id="allMsgsGrowl" for="@inView"
                                 closeAll="true" autoHide="true" maxVisibleMessages="0" position="top-right"
-                                header=" " useNativeNotifications="true"/-->
+                                header=" " useNativeNotifications="true"/>
             
         </h:form>
     </h:body>
